@@ -109,7 +109,17 @@ Parameters:
       - No
 
   SubtitleLanguages:
-    Description: Specify languages for subtitle generation. Example "en, es, pt" for English, Spanish and Portuguese.
+    Description: Specify destination languages for subtitle generation. Example "en, es, pt" for English, Spanish and Portuguese.
+    Type: String
+    Default: "en"
+
+  VideoSourceLanguage:
+    Description: Specify video language source. Example "en-US" for English or "es-ES for Spanish.
+    Type: String
+    Default: "en-US"
+
+  CaptionSourceLanguage:
+    Description: Specify source languages for subtitle generation. Example "en" for English or "es" for Spanish.
     Type: String
     Default: "en"
 
@@ -163,6 +173,8 @@ Metadata:
               Parameters:
                 - UseSubtitleGeneration
                 - SubtitleLanguages
+                - VideoSourceLanguaje
+                - CaptionSourceLanguage
                 - CustomVocabulary
 
 
@@ -201,7 +213,10 @@ Metadata:
             default: Turn on Subtitle Generation
           SubtitleLanguages:
             default: Languages For Subtitle Creation
-
+          VideoSourceLanguage:
+            default: Video Source Language
+          CaptionSourceLanguage:
+            default: Source Language Used for Subtitle Creation
 
 Mappings:
   SourceCode:
@@ -210,7 +225,7 @@ Mappings:
       KeyPrefix: live-streaming-with-automated-multi-language-subtitling/%%CODEVERSION%%
       # This V2.2.0 is for custom resources. v2.2.0 supports MediaConnect.
       # LivePrefix: live-streaming-on-aws/latest
-      LivePrefix: live-streaming-on-aws/v2.2.0
+      LivePrefix: live-streaming-on-aws
 
   AnonymousData:
     SendAnonymousData:
@@ -561,6 +576,7 @@ Resources:
           mediaPackageUsernamePipe1: !GetAtt MediaPackageChannel.SecondaryUser
           captionLanguages: !Ref SubtitleLanguages
           transcribeLambdaARN: !GetAtt TranscribeLambda.Arn
+          sourceLanguaje: !Ref CaptionSourceLanguage 
 
 # Java Lambda
   TranscribeLambda:
@@ -579,6 +595,7 @@ Resources:
       Environment:
         Variables:
           customVocabulary: !Ref CustomVocabulary
+          sourceLanguaje: !Ref CaptionSourceLanguage
 
 # Permission for CaptionCreation Lambda to be invoked from AWS S3 Cloudwatch event.
   CaptionCreationPermissions:

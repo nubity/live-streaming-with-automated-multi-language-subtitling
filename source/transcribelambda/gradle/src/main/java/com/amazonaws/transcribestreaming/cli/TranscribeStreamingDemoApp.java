@@ -196,13 +196,13 @@ public class TranscribeStreamingDemoApp {
     private static StartStreamTranscriptionRequest getRequest(Integer mediaSampleRateHertz, String customVocabulary) {
         if(customVocabulary == null || customVocabulary.equals("")){
             return StartStreamTranscriptionRequest.builder()
-                    .languageCode(LanguageCode.EN_US.toString())
+                    .languageCode(System.getenv("sourceLanguaje"))
                     .mediaEncoding(MediaEncoding.PCM)
                     .mediaSampleRateHertz(mediaSampleRateHertz)
                     .build();
         }else {
             return StartStreamTranscriptionRequest.builder()
-                    .languageCode(LanguageCode.EN_US.toString())
+                    .languageCode(System.getenv("sourceLanguaje"))
                     .mediaEncoding(MediaEncoding.PCM)
                     .mediaSampleRateHertz(mediaSampleRateHertz)
                     .vocabularyName(customVocabulary)

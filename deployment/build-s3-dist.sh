@@ -92,11 +92,23 @@ cd $deployment_dir/../source/captionlambda
 
 echo "Adding lambda_function.py ffmpeg and ffprobe to captionlambda.zip"
 echo "zip -rv $deployment_dir/dist/captionlambda.zip lambda_function.py ffmpeg ffprobe"
-zip -rv $deployment_dir/dist/captionlambda.zip lambda_function.py ffmpeg ffprobe
+mkdir $deployment_dir/dist/live-streaming-with-automated-multi-language-subtitling
+mkdir $deployment_dir/dist/live-streaming-with-automated-multi-language-subtitling/$2
+
+zip -rv $deployment_dir/dist/live-streaming-with-automated-multi-language-subtitling/$2/captionlambda.zip lambda_function.py ffmpeg ffprobe
+
+#Build custom resource
+cd $deployment_dir/custom_resources/custom-resource-py
+zip -q -r9 $deployment_dir/dist/live-streaming-on-aws/custom-resource-py.zip *
 
 # Build Transcribelambda (Moving the ZIP file into the distribution directory)
 cd $deployment_dir/..
-cp source/transcribelambda/TranscribeStreamingJavaLambda.jar $deployment_dir/dist/
+echo "gradle build"
+cd source/transcribelambda/gradle
+gradle clean
+gradle shadowJar
+mkdir $deployment_dir/dist/live-streaming-on-aws/
+cp $deployment_dir/../source/transcribelambda/gradle/build/libs/TranscribeStreamingJavaLambda.jar $deployment_dir/dist/live-streaming-with-automated-multi-language-subtitling/$2/
 
 
 # # Custom Resource same exact ones from Live Streaming on AWS

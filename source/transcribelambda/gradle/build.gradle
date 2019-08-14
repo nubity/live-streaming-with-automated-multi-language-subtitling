@@ -6,15 +6,16 @@
  */
 plugins {
     id 'java-library'
-    id "com.github.johnrengelman.shadow" version "2.0.4"
+    id "com.github.johnrengelman.shadow" version "4.0.2"
 }
 
 shadowJar {
     zip64 true
+    archiveName = 'TranscribeStreamingJavaLambda.jar'
 }
 
 apply plugin: 'application'
-mainClassName = "com.amazonaws.transcribestreaming.cli.TranscribeStreamingDemoApp"
+mainClassName='com.amazonaws.transcribestreaming.cli.TranscribeStreamingDemoApp'
 
 repositories {
     maven {
